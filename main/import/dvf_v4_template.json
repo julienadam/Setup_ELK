@@ -1,0 +1,184 @@
+{
+  "index_patterns": [
+    "dvf-v4-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "number_of_replicas": 0
+      }
+    },
+    "mappings": {
+      "properties": {
+        "@version": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "adresse": {
+          "properties": {
+            "adresse_complete": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "code_commune": {
+              "type": "keyword"
+            },
+            "code_postal": {
+              "type": "keyword"
+            },
+            "code_voie": {
+              "type": "keyword"
+            },
+            "nom_commune": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "nom_voie": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "numero": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ancienne_parcelle": {
+          "properties": {
+            "code_insee": {
+              "type": "keyword"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "numero": {
+              "type": "keyword"
+            },
+            "prefixe": {
+              "type": "keyword"
+            },
+            "section": {
+              "type": "keyword"
+            }
+          }
+        },
+        "bati": {
+          "properties": {
+            "code_type_local": {
+              "type": "keyword"
+            },
+            "nombre_pieces_principales": {
+              "type": "integer"
+            },
+            "surface_reelle": {
+              "type": "float"
+            },
+            "type_local": {
+              "type": "keyword"
+            }
+          }
+        },
+        "code_departement": {
+          "type": "keyword"
+        },
+        "date_mutation": {
+          "type": "date"
+        },
+        "id_mutation": {
+          "type": "keyword"
+        },
+        "localisation": {
+          "type": "geo_point"
+        },
+        "lots": {
+          "properties": {
+            "numero": {
+              "type": "keyword"
+            },
+            "surface_carrez": {
+              "type": "float"
+            }
+          }
+        },
+        "message": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "nature_mutation": {
+          "type": "keyword"
+        },
+        "nombre_lots": {
+          "type": "integer"
+        },
+        "numero_disposition": {
+          "type": "keyword"
+        },
+        "parcelle": {
+          "properties": {
+            "code_insee": {
+              "type": "keyword"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "numero": {
+              "type": "keyword"
+            },
+            "prefixe": {
+              "type": "keyword"
+            },
+            "section": {
+              "type": "keyword"
+            }
+          }
+        },
+        "terrain": {
+          "properties": {
+            "code_nature_culture": {
+              "type": "keyword"
+            },
+            "code_nature_culture_speciale": {
+              "type": "keyword"
+            },
+            "nature_culture": {
+              "type": "keyword"
+            },
+            "nature_culture_speciale": {
+              "type": "keyword"
+            },
+            "surface_terrain": {
+              "type": "float"
+            }
+          }
+        },
+        "valeur_fonciere": {
+          "type": "float"
+        }
+      }
+    }
+  }
+}

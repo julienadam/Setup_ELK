@@ -1,0 +1,767 @@
+{
+  "index_patterns": [
+    "mtg_v2"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "number_of_shards": "1",
+        "number_of_replicas": "0",
+        "default_pipeline": "mtg_v1_to_v2"
+      },
+      "analysis": {
+        "analyzer": {
+          "trigram": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "shingle"
+            ]
+          }
+        },
+        "filter": {
+          "shingle": {
+            "type": "shingle",
+            "min_shingle_size": 2,
+            "max_shingle_size": 3
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "keywords": {
+          "type": "keyword"
+        },
+        "oracle_text": {
+          "type": "text",
+          "analyzer": "english"
+        },
+        "tcgplayer_id": {
+          "type": "long"
+        },
+        "prints_search_uri": {
+          "type": "keyword"
+        },
+        "printed": {
+          "properties": {
+            "text": {
+              "properties": {
+                "es": {
+                  "type": "text",
+                  "analyzer": "spanish"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french"
+                },
+                "de": {
+                  "type": "text",
+                  "analyzer": "german"
+                },
+                "pt": {
+                  "type": "text",
+                  "analyzer": "portuguese"
+                },
+                "it": {
+                  "type": "text",
+                  "analyzer": "italian"
+                },
+                "ru": {
+                  "type": "text",
+                  "analyzer": "russian"
+                }
+              }
+            },
+            "flavor_text": {
+              "properties": {
+                "es": {
+                  "type": "text",
+                  "analyzer": "spanish"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french"
+                },
+                "de": {
+                  "type": "text",
+                  "analyzer": "german"
+                },
+                "pt": {
+                  "type": "text",
+                  "analyzer": "portuguese"
+                },
+                "it": {
+                  "type": "text",
+                  "analyzer": "italian"
+                },
+                "ru": {
+                  "type": "text",
+                  "analyzer": "russian"
+                }
+              }
+            },
+            "name": {
+              "properties": {
+                "es": {
+                  "type": "text",
+                  "analyzer": "spanish"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french"
+                },
+                "de": {
+                  "type": "text",
+                  "analyzer": "german"
+                },
+                "pt": {
+                  "type": "text",
+                  "analyzer": "portuguese"
+                },
+                "it": {
+                  "type": "text",
+                  "analyzer": "italian"
+                },
+                "ru": {
+                  "type": "text",
+                  "analyzer": "russian"
+                }
+              }
+            },
+            "type_line": {
+              "properties": {
+                "es": {
+                  "type": "text",
+                  "analyzer": "spanish"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french"
+                },
+                "de": {
+                  "type": "text",
+                  "analyzer": "german"
+                },
+                "pt": {
+                  "type": "text",
+                  "analyzer": "portuguese"
+                },
+                "it": {
+                  "type": "text",
+                  "analyzer": "italian"
+                },
+                "ru": {
+                  "type": "text",
+                  "analyzer": "russian"
+                }
+              }
+            }
+          }
+        },
+        "flavor_text": {
+          "type": "text",
+          "analyzer": "english"
+        },
+        "set_search_uri": {
+          "type": "keyword"
+        },
+        "variation": {
+          "type": "boolean"
+        },
+        "flavor_name": {
+          "type": "keyword"
+        },
+        "hand_modifier": {
+          "type": "keyword"
+        },
+        "promo_types": {
+          "type": "keyword"
+        },
+        "set_name": {
+          "type": "text",
+          "analyzer": "english",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "edhrec_rank": {
+          "type": "long"
+        },
+        "scryfall_uri": {
+          "type": "keyword"
+        },
+        "mana_cost": {
+          "type": "keyword"
+        },
+        "games": {
+          "type": "keyword"
+        },
+        "set_id": {
+          "type": "keyword"
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "foil": {
+          "type": "boolean"
+        },
+        "toughness": {
+          "type": "keyword"
+        },
+        "toughness_value": {
+          "type": "integer"
+        },
+        "scryfall_set_uri": {
+          "type": "keyword"
+        },
+        "watermark": {
+          "type": "keyword"
+        },
+        "loyalty": {
+          "type": "keyword"
+        },
+        "loyalty_value": {
+          "type": "integer"
+        },
+        "tcgplayer_etched_id": {
+          "type": "long"
+        },
+        "color_identity": {
+          "type": "keyword"
+        },
+        "related_uris": {
+          "properties": {
+            "tcgplayer_infinite_decks": {
+              "type": "keyword"
+            },
+            "gatherer": {
+              "type": "keyword"
+            },
+            "mtgtop8": {
+              "type": "keyword"
+            },
+            "edhrec": {
+              "type": "keyword"
+            },
+            "tcgplayer_infinite_articles": {
+              "type": "keyword"
+            }
+          }
+        },
+        "set_type": {
+          "type": "keyword"
+        },
+        "type_line": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "legalities": {
+          "properties": {
+            "oldschool": {
+              "type": "keyword"
+            },
+            "standard": {
+              "type": "keyword"
+            },
+            "historicbrawl": {
+              "type": "keyword"
+            },
+            "historic": {
+              "type": "keyword"
+            },
+            "legacy": {
+              "type": "keyword"
+            },
+            "paupercommander": {
+              "type": "keyword"
+            },
+            "gladiator": {
+              "type": "keyword"
+            },
+            "pioneer": {
+              "type": "keyword"
+            },
+            "commander": {
+              "type": "keyword"
+            },
+            "modern": {
+              "type": "keyword"
+            },
+            "pauper": {
+              "type": "keyword"
+            },
+            "premodern": {
+              "type": "keyword"
+            },
+            "future": {
+              "type": "keyword"
+            },
+            "vintage": {
+              "type": "keyword"
+            },
+            "duel": {
+              "type": "keyword"
+            },
+            "brawl": {
+              "type": "keyword"
+            },
+            "penny": {
+              "type": "keyword"
+            }
+          }
+        },
+        "produced_mana": {
+          "type": "keyword"
+        },
+        "border_color": {
+          "type": "keyword"
+        },
+        "mtgo_foil_id": {
+          "type": "long"
+        },
+        "cardmarket_id": {
+          "type": "long"
+        },
+        "reserved": {
+          "type": "boolean"
+        },
+        "cmc": {
+          "type": "float"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "english",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            },
+            "search" : {
+              "type" : "search_as_you_type"
+            },
+            "autocomplete" : {
+              "type" : "completion"
+            },
+            "trigram" : {
+              "type" : "text", "analyzer" : "trigram"
+            }
+          }
+        },
+        "arena_id": {
+          "type": "long"
+        },
+        "frame": {
+          "type": "keyword"
+        },
+        "object": {
+          "type": "constant_keyword"
+        },
+        "rarity": {
+          "type": "keyword"
+        },
+        "preview": {
+          "properties": {
+            "source": {
+              "type": "keyword"
+            },
+            "source_uri": {
+              "type": "keyword"
+            },
+            "previewed_at": {
+              "type": "date"
+            }
+          }
+        },
+        "oracle_id": {
+          "type": "keyword"
+        },
+        "artist": {
+          "type": "keyword"
+        },
+        "color_indicator": {
+          "type": "keyword"
+        },
+        "life_modifier": {
+          "type": "keyword"
+        },
+        "released_at": {
+          "type": "date"
+        },
+        "frame_effects": {
+          "type": "keyword"
+        },
+        "booster": {
+          "type": "boolean"
+        },
+        "colors": {
+          "type": "keyword"
+        },
+        "illustration_id": {
+          "type": "keyword"
+        },
+        "artist_ids": {
+          "type": "keyword"
+        },
+        "promo": {
+          "type": "boolean"
+        },
+        "mtgo_id": {
+          "type": "long"
+        },
+        "rulings_uri": {
+          "type": "keyword"
+        },
+        "collector_number": {
+          "type": "keyword"
+        },
+        "finishes": {
+          "type": "keyword"
+        },
+        "set_uri": {
+          "type": "keyword"
+        },
+        "power": {
+          "type": "keyword"
+        },
+        "power_value": {
+          "type": "integer"
+        },
+        "lang": {
+          "type": "keyword"
+        },
+        "prices": {
+          "properties": {
+            "usd_foil": {
+              "type": "float"
+            },
+            "tix": {
+              "type": "float"
+            },
+            "usd_etched": {
+              "type": "float"
+            },
+            "eur": {
+              "type": "float"
+            },
+            "usd": {
+              "type": "float"
+            },
+            "eur_foil": {
+              "type": "float"
+            }
+          }
+        },
+        "highres_image": {
+          "type": "boolean"
+        },
+        "digital": {
+          "type": "boolean"
+        },
+        "set": {
+          "type": "keyword"
+        },
+        "reprint": {
+          "type": "boolean"
+        },
+        "content_warning": {
+          "type": "boolean"
+        },
+        "full_art": {
+          "type": "boolean"
+        },
+        "image_uris": {
+          "properties": {
+            "small": {
+              "type": "keyword"
+            },
+            "normal": {
+              "type": "keyword"
+            },
+            "large": {
+              "type": "keyword"
+            },
+            "png": {
+              "type": "keyword"
+            },
+            "border_crop": {
+              "type": "keyword"
+            },
+            "art_crop": {
+              "type": "keyword"
+            }
+          }
+        },
+        "card_back_id": {
+          "type": "keyword"
+        },
+        "nonfoil": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "keyword"
+        },
+        "layout": {
+          "type": "keyword"
+        },
+        "multiverse_ids": {
+          "type": "long"
+        },
+        "variation_of": {
+          "type": "keyword"
+        },
+        "oversized": {
+          "type": "boolean"
+        },
+        "story_spotlight": {
+          "type": "boolean"
+        },
+        "image_status": {
+          "type": "keyword"
+        },
+        "textless": {
+          "type": "boolean"
+        },
+        "all_parts": {
+          "type": "nested",
+          "properties": {
+            "component": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text",
+              "analyzer": "english",
+              "fields": {
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "type_line": {
+              "type": "text",
+              "analyzer": "english",
+              "fields": {
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "uri": {
+              "type": "keyword"
+            },
+            "object": {
+              "type": "constant_keyword"
+            }
+          }
+        },
+        "card_faces": {
+          "type": "nested",
+          "properties": {
+            "watermark": {
+              "type": "keyword"
+            },
+            "artist": {
+              "type": "keyword"
+            },
+            "oracle_text": {
+              "type": "text",
+              "analyzer": "english"
+            },
+            "loyalty": {
+              "type": "keyword"
+            },
+            "loyalty_value": {
+              "type": "integer"
+            },
+            "printed": {
+              "properties": {
+                "text": {
+                  "properties": {
+                    "es": {
+                      "type": "text",
+                      "analyzer": "spanish"
+                    },
+                    "fr": {
+                      "type": "text",
+                      "analyzer": "french"
+                    },
+                    "de": {
+                      "type": "text",
+                      "analyzer": "german"
+                    },
+                    "pt": {
+                      "type": "text",
+                      "analyzer": "portuguese"
+                    },
+                    "it": {
+                      "type": "text",
+                      "analyzer": "italian"
+                    },
+                    "ru": {
+                      "type": "text",
+                      "analyzer": "russian"
+                    }
+                  }
+                },
+                "name": {
+                  "properties": {
+                    "es": {
+                      "type": "text",
+                      "analyzer": "spanish"
+                    },
+                    "fr": {
+                      "type": "text",
+                      "analyzer": "french"
+                    },
+                    "de": {
+                      "type": "text",
+                      "analyzer": "german"
+                    },
+                    "pt": {
+                      "type": "text",
+                      "analyzer": "portuguese"
+                    },
+                    "it": {
+                      "type": "text",
+                      "analyzer": "italian"
+                    },
+                    "ru": {
+                      "type": "text",
+                      "analyzer": "russian"
+                    }
+                  }
+                },
+                "type_line": {
+                  "properties": {
+                    "es": {
+                      "type": "text",
+                      "analyzer": "spanish"
+                    },
+                    "fr": {
+                      "type": "text",
+                      "analyzer": "french"
+                    },
+                    "de": {
+                      "type": "text",
+                      "analyzer": "german"
+                    },
+                    "pt": {
+                      "type": "text",
+                      "analyzer": "portuguese"
+                    },
+                    "it": {
+                      "type": "text",
+                      "analyzer": "italian"
+                    },
+                    "ru": {
+                      "type": "text",
+                      "analyzer": "russian"
+                    }
+                  }
+                }
+              }
+            },
+            "type_line": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "color_indicator": {
+              "type": "keyword"
+            },
+            "image_uris": {
+              "properties": {
+                "small": {
+                  "type": "keyword"
+                },
+                "normal": {
+                  "type": "keyword"
+                },
+                "large": {
+                  "type": "keyword"
+                },
+                "png": {
+                  "type": "keyword"
+                },
+                "border_crop": {
+                  "type": "keyword"
+                },
+                "art_crop": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "artist_id": {
+              "type": "keyword"
+            },
+            "colors": {
+              "type": "keyword"
+            },
+            "flavor_text": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "illustration_id": {
+              "type": "keyword"
+            },
+            "mana_cost": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "power": {
+              "type": "keyword"
+            },
+            "power_value": {
+              "type": "integer"
+            },
+            "toughness": {
+              "type": "keyword"
+            },
+            "toughness_value": {
+              "type": "integer"
+            },
+            "object": {
+              "type": "constant_keyword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "composed_of": [],
+  "priority": 1,
+  "_meta": {
+    "description": "A template for mtg cards from scryfall.com, uses a pipeline to transform printed_* into analyzed fields"
+  }
+}

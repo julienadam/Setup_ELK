@@ -1,0 +1,148 @@
+{
+  "index_patterns": [
+    "dvf-v3-*"
+  ],
+  "priority": 1,
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "adresse_code_voie": {
+          "type": "keyword"
+        },
+        "adresse_nom_voie": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "adresse_numero": {
+          "type": "keyword"
+        },
+        "adresse_suffixe": {
+          "type": "keyword"
+        },
+        "code_commune": {
+          "type": "keyword"
+        },
+        "code_departement": {
+          "type": "keyword"
+        },
+        "code_nature_culture": {
+          "type": "keyword"
+        },
+        "code_nature_culture_speciale": {
+          "type": "keyword"
+        },
+        "code_postal": {
+          "type": "keyword"
+        },
+        "code_type_local": {
+          "type": "keyword"
+        },
+        "date_mutation": {
+          "type": "date"
+        },
+        "id_mutation": {
+          "type": "keyword"
+        },
+        "id_parcelle": {
+          "type": "keyword"
+        },
+        "latitude": {
+          "type": "float"
+        },
+        "longitude": {
+          "type": "float"
+        },
+        "lot1_numero": {
+          "type": "keyword"
+        },
+        "lot1_surface_carrez": {
+          "type": "float"
+        },
+        "lot2_numero": {
+          "type": "keyword"
+        },
+        "lot2_surface_carrez": {
+          "type": "float"
+        },
+        "lot3_numero": {
+          "type": "keyword"
+        },
+        "lot3_surface_carrez": {
+          "type": "float"
+        },
+        "lot4_numero": {
+          "type": "keyword"
+        },
+        "lot4_surface_carrez": {
+          "type": "float"
+        },
+        "lot5_numero": {
+          "type": "keyword"
+        },
+        "lot5_surface_carrez": {
+          "type": "float"
+        },
+        "message": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "nature_culture": {
+          "type": "keyword"
+        },
+        "nature_culture_speciale": {
+          "type": "keyword"
+        },
+        "nature_mutation": {
+          "type": "keyword"
+        },
+        "nom_commune": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "nombre_lots": {
+          "type": "integer"
+        },
+        "nombre_pieces_principales": {
+          "type": "integer"
+        },
+        "numero_disposition": {
+          "type": "integer"
+        },
+        "numero_volume": {
+          "type": "integer"
+        },
+        "surface_reelle_bati": {
+          "type": "float"
+        },
+        "surface_terrain": {
+          "type": "float"
+        },
+        "type_local": {
+          "type": "keyword"
+        },
+        "valeur_fonciere": {
+          "type": "float"
+        }
+      }
+    }
+  }
+}

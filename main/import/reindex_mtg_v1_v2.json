@@ -1,0 +1,10 @@
+{
+  "source": 
+  {
+    "index": "mtg_v1"
+  },
+  "dest": 
+  {
+    "index": "mtg_v2"
+  }
+}

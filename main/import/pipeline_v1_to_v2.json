@@ -1,0 +1,98 @@
+{
+  "description": "Transforms raw json data cards into better typed card data. Handles power / toughness / loyalty as both numbers and keywords, puts printed_* fields into dedicated per langage fields",
+  "processors": [
+    {
+      "foreach": {
+        "field": "card_faces",
+        "processor": {
+          "convert": {
+            "field": "_ingest._value.power",
+            "type": "integer",
+            "target_field": "_ingest._value.power_value",
+            "ignore_missing": true,
+            "ignore_failure": true
+          }
+        },
+        "ignore_failure": true,
+        "description": "converts power inside card_faces"
+      }
+    },
+    {
+      "foreach": {
+        "field": "card_faces",
+        "processor": {
+          "convert": {
+            "field": "_ingest._value.toughness",
+            "type": "integer",
+            "target_field": "_ingest._value.toughness_value",
+            "ignore_missing": true,
+            "ignore_failure": true
+          }
+        },
+        "ignore_failure": true,
+        "description": "converts toughness inside card_faces"
+      }
+    },
+    {
+      "foreach": {
+        "field": "card_faces",
+        "processor": {
+          "convert": {
+            "field": "_ingest._value.loyalty",
+            "type": "integer",
+            "target_field": "_ingest._value.loyalty_value",
+            "ignore_missing": true,
+            "ignore_failure": true
+          }
+        },
+        "ignore_failure": true,
+        "description": "converts loyalty inside card_faces"
+      }
+    },
+    {
+      "convert": {
+        "field": "power",
+        "type": "integer",
+        "target_field": "power_value",
+        "ignore_missing": true,
+        "ignore_failure": true
+      }
+    },
+    {
+      "convert": {
+        "field": "toughness",
+        "type": "integer",
+        "target_field": "toughness_value",
+        "ignore_missing": true,
+        "ignore_failure": true
+      }
+    },
+    {
+      "convert": {
+        "field": "loyalty",
+        "type": "integer",
+        "target_field": "loyalty_value",
+        "ignore_missing": true,
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "source": "HashMap printed = new HashMap();\r\nHashMap fields = new HashMap();\r\nfields.put(\"printed_text\", \"text\");\r\nfields.put(\"printed_name\", \"name\");\r\nfields.put(\"printed_type_line\", \"type_line\");\r\nfields.put(\"flavor_text\", \"flavor_text\");\r\n\r\nfor (kvp in fields.entrySet())\r\n{\r\n    def srcField = kvp.getKey();\r\n    def dstField = kvp.getValue();\r\n    \r\n    if(ctx[srcField] != null)\r\n    {\r\n        Map text = new HashMap();\r\n        text.put(ctx.lang, ctx[srcField]);\r\n        printed.put(dstField, text);\r\n        ctx.remove(srcField);\r\n    }\r\n}\r\n\r\nif(ctx.card_faces != null)\r\n{\r\n    for(face in ctx.card_faces)\r\n    {\r\n        HashMap facePrinted = new HashMap();\r\n        for (kvp in fields.entrySet())\r\n        {\r\n            def srcField = kvp.getKey();\r\n            def dstField = kvp.getValue();\r\n            if(face[srcField] != null)\r\n            {\r\n                Map text = new HashMap();\r\n                text.put(ctx.lang, face[srcField]);\r\n                facePrinted.put(dstField, text);\r\n                face.remove(srcField);\r\n            }\r\n        }\r\n        face.printed = facePrinted;\r\n    }\r\n}\r\nctx.printed = printed;"
+      }
+    },
+    {
+      "remove": {
+        "ignore_failure": true,
+        "field": "_id",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "id",
+        "target_field": "_id"
+      }
+    }
+  ]
+}
