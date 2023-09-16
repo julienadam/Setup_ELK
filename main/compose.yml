@@ -44,6 +44,12 @@ services:
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
+          "  - name: kib01\n"\
+          "    dns:\n"\
+          "      - kib01\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
           > config/certs/instances.yml;
           bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
           unzip config/certs/certs.zip -d config/certs;
@@ -210,6 +216,10 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - SERVER_SSL_ENABLED=true
+      - SERVER_SSL_KEY=config/certs/kib01/kib01.key
+      - SERVER_SSL_CERTIFICATE=config/certs/kib01/kib01.crt
+      - ES_URL=https://es01:9200
       - SERVER_PUBLICBASEURL=${PUBLIC_URL}
     mem_limit: 2147483648
     healthcheck:
