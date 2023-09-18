@@ -1,0 +1,21 @@
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+processors:
+  - add_host_metadata: ~
+  - add_docker_metadata: ~
+
+setup.kibana:
+  host: "https://kibana:5601"
+  username: "elastic"
+  password: ${ELASTIC_PASSWORD} 
+
+output.elasticsearch:
+  hosts: ["https://es01:9200", "https://es02:9200", "https://es03:9200"]
+  username: "elastic"
+  password: ${ELASTIC_PASSWORD}
+  ssl:
+    enabled: true
+    verification_mode: none

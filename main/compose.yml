@@ -88,6 +88,7 @@ services:
       - ${ES_PORT}:9200
     environment:
       - node.name=es01
+      - node.roles=master,voting_only,data_hot,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es02,es03
@@ -106,11 +107,7 @@ services:
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
     labels:
-      - co.elastic.metrics/module=elasticsearch
-      - co.elastic.metrics/hosts=https://es01:9200
-      - co.elastic.metrics/username=elastic
-      - co.elastic.metrics/password=${ELASTIC_PASSWORD}
-      - co.elastic.metrics/ssl.verification_mode=none
+      co.elastic.logs/module: elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -137,9 +134,11 @@ services:
       - elk
     environment:
       - node.name=es02
+      - node.roles=master,data_warm,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es03
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -153,6 +152,8 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
+    labels:
+      co.elastic.logs/module: elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -179,9 +180,11 @@ services:
       - elk
     environment:
       - node.name=es03
+      - node.roles=master,data_cold,ingest,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es02
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -195,6 +198,8 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
+    labels:
+      co.elastic.logs/module: elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -235,18 +240,58 @@ services:
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_KEY=config/certs/kib01/kib01.key
       - SERVER_SSL_CERTIFICATE=config/certs/kib01/kib01.crt
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${KEY}
       - ES_URL=https://es01:9200
       - SERVER_PUBLICBASEURL=${PUBLIC_URL}
     mem_limit: 2147483648
+    labels:
+      co.elastic.logs/module: kibana
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "curl -s -I -k https://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
         ]
       interval: 10s
       timeout: 10s
       retries: 120
+  metricbeat01:
+    depends_on:
+      es01:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    user: root
+    command: ["run", "-e", "--strict.perms=false"]
+    networks:
+      - elk
+    volumes:
+      - metricbeatdata01:/usr/share/metricbeat/data
+      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/proc:/hostfs/proc:ro"
+      - "/:/hostfs:ro"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+  filebeat01:
+    depends_on:
+      es01:
+        condition: service_healthy
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    command: ["run", "-e", "--strict.perms=false"]
+    user: root
+    networks:
+      - elk
+    volumes:
+      - certs:/usr/share/filebeat/certs
+      - filebeatdata01:/usr/share/filebeat/data
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
 
 networks:
   elk:
@@ -263,4 +308,8 @@ volumes:
   esdata03:
     driver: local
   kibanadata:
+    driver: local
+  metricbeatdata01:
+    driver: local
+  filebeatdata01:
     driver: local
