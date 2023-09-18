@@ -232,6 +232,11 @@ services:
       timeout: 10s
       retries: 120
 
+networks:
+  elk:
+    driver: bridge
+    name: elk
+
 volumes:
   certs:
     driver: local
