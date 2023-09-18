@@ -1,10 +1,10 @@
 version: "2.2"
 
 services:
-  setup:
+  setup_monitoring:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
-      - certs:/usr/share/elasticsearch/config/certs
+      - monitoring_certs:/usr/share/elasticsearch/config/certs
     networks:
       - elk
     user: "0"
@@ -66,15 +66,15 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     restart: always
     volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - esdata01:/usr/share/elasticsearch/data
+      - monitoring_certs:/usr/share/elasticsearch/config/certs
+      - esmonitoringdata01:/usr/share/elasticsearch/data
     networks:
       - elk
     ports:
-      - ${ES_PORT}:9200
+      - ${MONITORING_ES_PORT}:9200
     environment:
       - node.name=esmonitoring01
-      - cluster.name=${CLUSTER_NAME}
+      - cluster.name=${CLUSTER_NAME}_monitoring
       - cluster.initial_master_nodes=esmonitoring01
       - discovery.seed_hosts=esmonitoring01
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -112,12 +112,12 @@ services:
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
     restart: always
     volumes:
-      - certs:/usr/share/kibana/config/certs
-      - kibanadata:/usr/share/kibana/data
+      - monitoring_certs:/usr/share/kibana/config/certs
+      - kibanamonitoringdata:/usr/share/kibana/data
     networks:
       - elk
     ports:
-      - ${KIBANA_PORT}:5601
+      - ${MONITORING_KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://esmonitoring01:9200
@@ -130,7 +130,7 @@ services:
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=abc45678901234567890123456789012
       - XPACK_ACTIONS_PRECONFIGUREDALERTHISTORYESINDEX=true
       - ES_URL=https://esmonitoring01:9200
-      - SERVER_PUBLICBASEURL=${PUBLIC_URL}
+      - SERVER_PUBLICBASEURL=${MONITORING_PUBLIC_URL}
     mem_limit: 2147483648
     healthcheck:
       test:
@@ -142,15 +142,10 @@ services:
       timeout: 10s
       retries: 120
 
-networks:
-  elk:
-    driver: bridge
-    name: elk
-
 volumes:
-  certs:
+  monitoring_certs:
     driver: local
-  esdata01:
+  esmonitoringdata01:
     driver: local
-  kibanadata:
+  kibanamonitoringdata:
     driver: local

@@ -8,12 +8,12 @@ processors:
   - add_docker_metadata: ~
 
 setup.kibana:
-  host: "https://kibana:5601"
+  host: "https://kibmonitoring01:5601"
   username: "elastic"
-  password: ${ELASTIC_PASSWORD} 
+  password: ${KIBANA_PASSWORD} 
 
 output.elasticsearch:
-  hosts: ["https://es01:9200", "https://es02:9200", "https://es03:9200"]
+  hosts: ["https://esmonitoring01:9200"]
   username: "elastic"
   password: ${ELASTIC_PASSWORD}
   ssl:
