@@ -86,7 +86,6 @@ services:
       - ${ES_PORT}:9200
     environment:
       - node.name=es01
-      - node.roles=master,voting_only,data_hot,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es02,es03
@@ -132,7 +131,6 @@ services:
       - elk
     environment:
       - node.name=es02
-      - node.roles=master,data_warm,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es03
@@ -178,7 +176,6 @@ services:
       - elk
     environment:
       - node.name=es03
-      - node.roles=master,data_cold,ingest,data_content,remote_cluster_client
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es02
