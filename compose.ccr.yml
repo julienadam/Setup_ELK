@@ -1,0 +1,21 @@
+services:
+  esmonitoring01:
+    volumes:
+      - certs:/usr/share/elasticsearch/config/prod_certs
+    environment:
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt,prod_certs/ca/ca.crt
+  es01:
+    volumes:
+      - monitoring_certs:/usr/share/elasticsearch/config/monitoring_certs
+    environment:
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt,monitoring_certs/ca/ca.crt
+  es02:
+    volumes:
+      - monitoring_certs:/usr/share/elasticsearch/config/monitoring_certs
+    environment:
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt,monitoring_certs/ca/ca.crt
+  es03:
+    volumes:
+      - monitoring_certs:/usr/share/elasticsearch/config/monitoring_certs
+    environment:
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt,monitoring_certs/ca/ca.crt
