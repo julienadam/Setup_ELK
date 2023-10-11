@@ -1,0 +1,19 @@
+services:
+  es01:
+    volumes:
+      - snapshots:/usr/share/elasticsearch/backups
+    environment:
+      - path.repo=/usr/share/elasticsearch/backups
+  es02:
+    volumes:
+      - snapshots:/usr/share/elasticsearch/backups
+    environment:
+      - path.repo=/usr/share/elasticsearch/backups
+  es03:
+    volumes:
+      - snapshots:/usr/share/elasticsearch/backups
+    environment:
+      - path.repo=/usr/share/elasticsearch/backups
+
+volumes:
+  snapshots: {}
