@@ -19,7 +19,7 @@ services:
       - elk
     volumes:
       - metricbeatdata01:/usr/share/metricbeat/data
-      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+      - "./metricbeat_monitoring.yml:/usr/share/metricbeat/metricbeat.yml:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
       - "/proc:/hostfs/proc:ro"
@@ -38,7 +38,7 @@ services:
     volumes:
       - certs:/usr/share/filebeat/certs
       - filebeatdata01:/usr/share/filebeat/data
-      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "./filebeat_monitoring.yml:/usr/share/filebeat/filebeat.yml:ro"
       - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
