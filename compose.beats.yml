@@ -13,6 +13,7 @@ services:
       kibmonitoring01:
         condition: service_healthy
     image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    restart: always
     user: root
     command: ["run", "-e", "--strict.perms=false"]
     networks:
@@ -31,6 +32,7 @@ services:
       es01:
         condition: service_healthy
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    restart: always
     command: ["run", "-e", "--strict.perms=false"]
     user: root
     networks:
