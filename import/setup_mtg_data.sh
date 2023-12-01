@@ -1,6 +1,9 @@
 #!/bin/bash
 mkdir -p ~/data
 
+echo "Setting env values from .env"
+export $(grep -v '^#' ../.env | xargs)
+
 if [[ -f ~/data/all-cards-20230424091518.ndjson ]] 
 then 
   echo "Card database already downloaded and extracted" 
@@ -21,9 +24,6 @@ docker run --rm \
   -v ${PWD}/logstash-mtg-v1.conf:/usr/share/logstash/logstash-mtg-v1.conf \
   docker.elastic.co/logstash/logstash:${STACK_VERSION} \
   -f /usr/share/logstash/logstash-mtg-v1.conf
-
-echo "Setting env values from .env"
-export $(grep -v '^#' ../.env | xargs)
 
 echo "Creating mtg v1 to v2 pipeline"
 curl \
