@@ -3,15 +3,15 @@ version: "2.2"
 services:
   fleet:
     depends_on:
-      es01:
+      esmonitoring01:
         condition: service_healthy
-      kib01:
+      kibmonitoring01:
         condition: service_healthy
     image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
     networks:
       - elk
     volumes:
-      - certs:/usr/share/elastic-agent/config/certs
+      - monitoring_certs:/usr/share/elastic-agent/config/certs
     container_name: fleet
     ports:
       - ${FLEET_PORT}:8220
@@ -26,8 +26,8 @@ services:
       - FLEET_SERVER_POLICY_ID=fleet-server-policy
       - FLEET_ENROLL=1
       - KIBANA_FLEET_SETUP=1
-      - KIBANA_FLEET_HOST=https://kib01:5601
-      - ELASTICSEARCH_HOST=https://es01:9200
+      - KIBANA_FLEET_HOST=https://kibmonitoring01:5601
+      - ELASTICSEARCH_HOST=https://esmonitoring01:9200
       - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTICSEARCH_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
@@ -45,7 +45,7 @@ services:
   agent:
     image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
     volumes:
-      - certs:/usr/share/elastic-agent/config/certs
+      - monitoring_certs:/usr/share/elastic-agent/config/certs
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     container_name: agent
