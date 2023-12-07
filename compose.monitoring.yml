@@ -13,9 +13,6 @@ services:
         if [ x${ELASTIC_PASSWORD} == x ]; then
           echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
           exit 1;
-        elif [ x${KIBANA_PASSWORD} == x ]; then
-          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
-          exit 1;
         fi;
         if [ ! -f config/certs/ca.zip ]; then
           echo "Creating CA";
@@ -49,7 +46,7 @@ services:
         echo "Waiting for Elasticsearch availability";
         until curl -s --cacert config/certs/ca/ca.crt https://esmonitoring01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://esmonitoring01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://esmonitoring01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELASTIC_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "All done!";
         sleep 2s;
       '
@@ -74,7 +71,7 @@ services:
       - ${MONITORING_ES_PORT}:9200
     environment:
       - node.name=esmonitoring01
-      - cluster.name=${CLUSTER_NAME}_monitoring
+      - cluster.name=${VM_NAME}_monitoring
       - cluster.initial_master_nodes=esmonitoring01
       - discovery.seed_hosts=esmonitoring01
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -122,7 +119,7 @@ services:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://esmonitoring01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_KEY=config/certs/kibmonitoring01/kibmonitoring01.key

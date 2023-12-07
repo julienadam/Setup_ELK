@@ -10,7 +10,7 @@ processors:
 setup.kibana:
   host: "https://kibmonitoring01:5601"
   username: "elastic"
-  password: ${KIBANA_PASSWORD} 
+  password: ${ELASTIC_PASSWORD} 
 
 output.elasticsearch:
   hosts: ["https://esmonitoring01:9200"]
