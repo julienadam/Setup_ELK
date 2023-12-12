@@ -75,10 +75,14 @@ services:
       retries: 120
 
   es01:
+    build:
+      context: .
+      args:
+        STACK_VERSION: ${STACK_VERSION}
+    image: arcodia/esplugins:${STACK_VERSION}
     depends_on:
       setup:
         condition: service_healthy
-    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     restart: always
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -89,7 +93,7 @@ services:
       - ${ES_PORT}:9200
     environment:
       - node.name=es01
-      - cluster.name=${VM_NAME}
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es02,es03
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -125,7 +129,7 @@ services:
   es02:
     depends_on:
       - es01
-    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    image: arcodia/esplugins:${STACK_VERSION}
     restart: always
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -134,7 +138,7 @@ services:
       - elk
     environment:
       - node.name=es02
-      - cluster.name=${VM_NAME}
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es03
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -170,7 +174,7 @@ services:
   es03:
     depends_on:
       - es02
-    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    image: arcodia/esplugins:${STACK_VERSION}
     restart: always
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -179,7 +183,7 @@ services:
       - elk
     environment:
       - node.name=es03
-      - cluster.name=${VM_NAME}
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es02
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -231,7 +235,7 @@ services:
       - ${KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTICSEARCH_HOSTS=["https://es01:9200","https://es02:9200","https://es03:9200"]
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
@@ -239,9 +243,8 @@ services:
       - SERVER_SSL_KEY=config/certs/kib01/kib01.key
       - SERVER_SSL_CERTIFICATE=config/certs/kib01/kib01.crt
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${KEY}
-      - ES_URL=https://es01:9200
-      - SERVER_PUBLICBASEURL=https://${VM_HOST}:${KIBANA_PORT}
-    mem_limit: 2147483648
+      - SERVER_PUBLICBASEURL=https://${PUBLIC_HOST}:${KIBANA_PORT}
+    mem_limit: ${KIBANA_MEM_LIMIT}
     labels:
       co.elastic.logs/module: kibana
     healthcheck:
