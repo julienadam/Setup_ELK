@@ -16,7 +16,7 @@ else {
   wget -O "$env:USERPROFILE/data/all-cards-20230424091518.ndjson.gz" "https://drive.google.com/uc?id=1KOpEVtqbVrKPnzAjeE5nR1nKXHuv1S-_&export=download&confirm=t&uuid=1b8625fb-98cb-4707-a18d-e395fe7a486a"
 
   echo "Decompressing card data"
-  gunzip "$env:USERPROFILE/data/all-cards-20230424091518.ndjson.gz"
+  gzip -d "$env:USERPROFILE/data/all-cards-20230424091518.ndjson.gz"
 }
 
 echo "Running v1 import"
