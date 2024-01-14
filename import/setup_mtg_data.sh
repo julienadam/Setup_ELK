@@ -9,7 +9,7 @@ then
   echo "Card database already downloaded and extracted" 
 else 
   echo "Download card data from google drive"
-  wget -O ~/data/all-cards-20230424091518.ndjson.gz "https://drive.usercontent.google.com/download?id=1KOpEVtqbVrKPnzAjeE5nR1nKXHuv1S-_&export=download&confirm=t&uuid=47c0aca6-0b03-47fe-9d86-e57b81368099"
+  wget -O ~/data/all-cards-20230424091518.ndjson.gz "https://formationdataaccount.blob.core.windows.net/formationdata/all-cards-20230424091518.ndjson.gz"
 
   echo "Decompressing card data"
   gunzip ~/data/all-cards-20230424091518.ndjson.gz
