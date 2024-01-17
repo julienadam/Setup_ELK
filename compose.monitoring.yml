@@ -71,7 +71,7 @@ services:
       - ${MONITORING_ES_PORT}:9200
     environment:
       - node.name=esmonitoring01
-      - cluster.name=${VM_NAME}_monitoring
+      - cluster.name=${CLUSTER_NAME}_monitoring
       - cluster.initial_master_nodes=esmonitoring01
       - discovery.seed_hosts=esmonitoring01
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -127,7 +127,7 @@ services:
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=abc45678901234567890123456789012
       - XPACK_ACTIONS_PRECONFIGUREDALERTHISTORYESINDEX=true
       - ES_URL=https://esmonitoring01:9200
-      - SERVER_PUBLICBASEURL=https://${VM_HOST}:${MONITORING_KIBANA_PORT}
+      - SERVER_PUBLICBASEURL=https://${PUBLIC_HOST}:${MONITORING_KIBANA_PORT}
     mem_limit: 2147483648
     healthcheck:
       test:
