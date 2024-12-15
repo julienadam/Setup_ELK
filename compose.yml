@@ -1,5 +1,3 @@
-version: "2.2"
-
 services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -44,12 +42,6 @@ services:
           "  - name: kib01\n"\
           "    dns:\n"\
           "      - kib01\n"\
-          "      - localhost\n"\
-          "    ip:\n"\
-          "      - 127.0.0.1\n"\
-          "  - name: fleet\n"\
-          "    dns:\n"\
-          "      - fleet\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\

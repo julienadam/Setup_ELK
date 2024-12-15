@@ -1,5 +1,3 @@
-version: "2.2"
-
 services:
   fleet:
     depends_on:
@@ -19,19 +17,23 @@ services:
     user: root # note, synthetic browser monitors require this set to `elastic-agent`
     environment:
       - FLEET_SERVER_ENABLE=1
+      - FLEET_SERVER_HOST=0.0.0.0
+      - FLEET_SERVER_ELASTICSEARCH_HOST=https://esmonitoring01:9200
+      - FLEET_SERVER_SERVICE_TOKEN=${FLEET_TOKEN}
+      - FLEET_SERVER_POLICY_ID=fleet-server-policy
+      - FLEET_ENROLLMENT_TOKEN=${AGENT_TOKEN}
+      - FLEET_ENROLL=1
+      - FLEET_URL=https://fleet:8220
+      - FLEET_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
+      - FLEET_SERVER_ELASTICSEARCH_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
       - FLEET_SERVER_CERT=/usr/share/elastic-agent/config/certs/fleet/fleet.crt
       - FLEET_SERVER_CERT_KEY=/usr/share/elastic-agent/config/certs/fleet/fleet.key
-      - FLEET_SERVER_HOST=0.0.0.0
-      - FLEET_SERVER_PORT=8220
-      - FLEET_SERVER_POLICY_ID=fleet-server-policy
-      - FLEET_ENROLL=1
+      - ELASTICSEARCH_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
+      - ELASTICSEARCH_HOST=https://esmonitoring01:9200
       - KIBANA_FLEET_SETUP=1
       - KIBANA_FLEET_HOST=https://kibmonitoring01:5601
-      - ELASTICSEARCH_HOST=https://esmonitoring01:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-      - ELASTICSEARCH_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
-      - FLEET_URL=https://fleet:8220
+      - KIBANA_FLEET_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
+      - KIBANA_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
     healthcheck:
       test:
         [
@@ -41,13 +43,16 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
-  
+
   agent:
     image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
     volumes:
       - monitoring_certs:/usr/share/elastic-agent/config/certs
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
     container_name: agent
     networks:
       - elk
@@ -58,8 +63,9 @@ services:
     environment:
       - FLEET_ENROLLMENT_TOKEN=${AGENT_TOKEN}
       - FLEET_ENROLL=1
-      - FLEET_CA=/usr/share/elastic-agent/config/certs/fleet/fleet.crt
+      - FLEET_CA=/usr/share/elastic-agent/config/certs/ca/ca.crt
       - FLEET_URL=https://fleet:8220
+      - FLEET_INSECURE=true
     healthcheck:
       test:
         [
