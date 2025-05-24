@@ -6,12 +6,12 @@ RUN bin/elasticsearch-plugin install analysis-nori && bin/elasticsearch-plugin i
 
 # Add hunspell dictionaries
 RUN mkdir -p config/hunspell/fr && mkdir -p config/hunspell/en-GB
-ADD --chown=elasticsearch:elasticsearch --chmod=444 https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/fr/index.aff https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/fr/index.dic config/hunspell/fr/
-ADD --chown=elasticsearch:elasticsearch --chmod=444 https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/en-GB/index.aff https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/en-GB/index.dic config/hunspell/en-GB/
+ADD --chown=elasticsearch:elasticsearch --chmod=444 https://raw.githubusercontent.com/julienadam/dictionaries/main/dictionaries/fr/index.aff https://raw.githubusercontent.com/julienadam/dictionaries/main/dictionaries/fr/index.dic config/hunspell/fr/
+ADD --chown=elasticsearch:elasticsearch --chmod=444 https://raw.githubusercontent.com/julienadam/dictionaries/main/dictionaries/en-GB/index.aff https://raw.githubusercontent.com/julienadam/dictionaries/main/dictionaries/en-GB/index.dic config/hunspell/en-GB/
 
 # Add sample synonym files
 RUN mkdir -p config/analysis/synonyms
-ADD --chown=elasticsearch:elasticsearch --chmod=660 https://raw.githubusercontent.com/agora-team/elasticsearch-synonyms/master/data/be-ae.synonyms https://raw.githubusercontent.com/agora-team/elasticsearch-synonyms/master/data/medical-terms.synonyms config/analysis/synonyms/
+ADD --chown=elasticsearch:elasticsearch --chmod=660 https://raw.githubusercontent.com/julienadam/elasticsearch-synonyms/master/data/be-ae.synonyms https://raw.githubusercontent.com/julienadam/elasticsearch-synonyms/master/data/medical-terms.synonyms config/analysis/synonyms/
 
 # Add decompounding support files
 # ADD --chown=elasticsearch:elasticsearch --chmod=660 https://master.dl.sourceforge.net/project/offo/offo-hyphenation/1.2/offo-hyphenation_v1.2.zip?viasf=1 /tmp/offo-hyphenation_v1.2.zip
