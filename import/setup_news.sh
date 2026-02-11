@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir ~/data
-wget -O ~/data/news.ndjson.gz "https://formationdataaccount.blob.core.windows.net/formationdata/Latest_News.ndjson.gz"
+wget -O ~/data/news.ndjson.gz "https://formation-arcodia.s3.fr-par.scw.cloud/Latest_News.ndjson.gz"
 gunzip ~/data/news.ndjson.gz
 
 docker run --rm \
