@@ -8,8 +8,8 @@ curl \
   -XPUT https://localhost:9200/_index_template/dvf_v4_template \
   --data-binary @dvf_v4_template.json
 
-echo Running logstash import for dvf-01-2020.csv
-cat ~/data/dvf-01-2020.csv | docker run --rm -i \
+echo Running logstash import for dvf-01-2024.csv
+cat ~/data/dvf-01-2024.csv | docker run --rm -i \
   --network host \
   --env-file ../.env \
   -e XPACK_MONITORING_ENABLED=false \
@@ -17,8 +17,8 @@ cat ~/data/dvf-01-2020.csv | docker run --rm -i \
   docker.elastic.co/logstash/logstash:${STACK_VERSION} \
   -w 1 -f /usr/share/logstash/logstash-dvf-v4.conf
 
-echo Running logstash import for dvf-02-2020.csv
-cat ~/data/dvf-02-2020.csv | docker run --rm -i \
+echo Running logstash import for dvf-02-2024.csv
+cat ~/data/dvf-02-2024.csv | docker run --rm -i \
   --network host \
   --env-file ../.env \
   -e XPACK_MONITORING_ENABLED=false \
