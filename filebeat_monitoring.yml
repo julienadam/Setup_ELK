@@ -1,6 +1,10 @@
 filebeat.autodiscover:
   providers:
-    - type: docker
+    - hints.default_config:
+        paths:
+        - /var/lib/docker/containers/${data.container.id}/*.log
+        type: container
+      type: docker
       hints.enabled: true
 
 processors:
